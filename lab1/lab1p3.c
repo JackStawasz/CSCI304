@@ -4,12 +4,12 @@
 #define MAX_LINE_NUM 200
 
 char* reverse_word(char* str) {
-    int len = 0;
-    while (str[len] != '\0') len++;
-    for (int i = 0; i < len / 2; i++) {
+    int letter = 0;
+    while (str[letter] != '\0') letter++;
+    for (int i = 0; i < letter / 2; i++) { // Perform character swaps
         char temp = str[i];
-        str[i] = str[len - i - 1];
-        str[len - i - 1] = temp;
+        str[i] = str[letter - i - 1];
+        str[letter - i - 1] = temp;
     }
     return str;
 }
