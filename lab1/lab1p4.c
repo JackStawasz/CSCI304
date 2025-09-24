@@ -1,32 +1,32 @@
 #include <stdio.h> 
 
-struct Node {
+typedef struct {
     char* data;
     struct Node* next;
-};
+} Node;
 
-struct Linkedlist {
+typedef struct {
     struct Node* head;
-};
+} Linkedlist;
 
-void insertAtBeginning(struct Linkedlist* LL, char ele[]) {
-
-}
-
-void insertAtTheEnd(struct Linkedlist* LL, char ele[]) {
+void insertAtBeginning(Linkedlist* LL, char ele[]) {
 
 }
 
-void deleteNode(struct Linkedlist* LL, char ele[]) {
+void insertAtTheEnd(Linkedlist* LL, char ele[]) {
+
+}
+
+void deleteNode(Linkedlist* LL, char ele[]) {
 
 }
 
 // Return 1 if node is found and 0 if not
-int findNode(struct Linkedlist LL, char ele[]) {
+int findNode(Linkedlist* LL, char ele[]) {
 
 }
 
-void displayLinkedList(struct Linkedlist LL) {
+void displayLinkedList(Linkedlist* LL) {
 
 }
 
