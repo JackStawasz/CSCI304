@@ -5,37 +5,40 @@
 #define MAX_LINE_LEN 100 // Max 100 characters per line of input file
 #define MAX_WORD_LEN 20  // Max 20 characters per word in line
 
-char* reverse_word(char* str) {
+char* process_word(char* str) {
     int len = strlen(str);
 
     // Perform character swaps
     for (int i=0; i < len / 2; i++) {
         char temp = str[i];
-        str[i] = str[len - i - 1];
-        str[len - i - 1] = temp;
+        str[i] = toupper(str[len - i - 1]);
+        str[len - i - 1] = toupper(temp);
     }
     return str;
 }
 
 char* process_line(char* line) {
-    // Copy line into mutable string
-    static char str_in[MAX_LINE_LEN];
-    sscanf(line, "%s", str_in);
-
     static char str_out[MAX_LINE_LEN];
+    str_out[0] = '\0';
     char word[MAX_WORD_LEN];
     int char_idx = 0; int word_idx = 0;
-    while (str_in[char_idx] != '\0' && char_idx < MAX_LINE_LEN) {
-        // Reverse & Save word when non-alphabetical char appears
-        if (!isalpha(str_in[char_idx])) {
-            strcat(str_out, reverse_word(word));
+    while (line[char_idx] != '\0' && char_idx < MAX_LINE_LEN) {
+        if (isalpha(line[char_idx])) { // Save letter to word
+            word[word_idx++] = line[char_idx++];
+        } else { // Save reversed word to output
+            word[word_idx] = '\0';
+            strcat(str_out, process_word(word));
             // Replace '_' with ' '
-            str_out[strlen(str_out)] = (str_in[char_idx] == '_' ? ' ' : str_in[char_idx]);
+            str_out[strlen(str_out)] = (line[char_idx] == '_' ? ' ' : line[char_idx]);
             memset(word, 0, sizeof(word)); // Clear word buffer
             char_idx++; word_idx = 0;
-            break;
         }
-        word[word_idx] = str_in[char_idx++];
+    }
+
+    // Append any remaining word
+    if (word_idx > 0) {
+        word[word_idx] = '\0';
+        strcat(str_out, process_word(word));
     }
 
     return str_out;
