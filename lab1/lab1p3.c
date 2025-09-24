@@ -19,7 +19,7 @@ char* process_word(char* str) {
     for (int i=0; i < len; i++) {
         str[i] = toupper(str[i]);
     }
-    
+
     return str;
 }
 
@@ -31,13 +31,20 @@ char* process_line(char* line) {
     while (line[char_idx] != '\0' && char_idx < MAX_LINE_LEN) {
         if (isalpha(line[char_idx])) { // Save letter to word
             word[word_idx++] = line[char_idx++];
-        } else { // Save reversed word to output
+        } else {
+            // Save reversed word to output
             word[word_idx] = '\0';
             strcat(str_out, process_word(word));
+
             // Replace '_' with ' '
-            str_out[strlen(str_out)] = (line[char_idx] == '_' ? ' ' : line[char_idx]);
-            memset(word, 0, sizeof(word)); // Clear word buffer
-            char_idx++; word_idx = 0;
+            int outlen = strlen(str_out);
+            str_out[outlen] = (line[char_idx] == '_' ? ' ' : line[char_idx]);
+            str_out[outlen+1] = '\0';
+            char_idx++;
+
+            // Reset word
+            word[0] = '\0';
+            word_idx = 0;
         }
     }
 
