@@ -34,7 +34,29 @@ void insertAtTheEnd(Linkedlist* LL, char ele[]) {
 }
 
 void deleteNode(Linkedlist* LL, char ele[]) {
+    Node* curNode = LL->head;
+    Node* prevNode = NULL;
 
+    // Find deletion node
+    while (curNode != NULL) {
+        if (curNode->data == ele) {
+            break;
+        }
+        prevNode = curNode;
+        curNode = curNode->next;
+    }
+
+    // Exit if LL is empty or "ele" not found
+    if (curNode == NULL) {
+        return;
+    }
+    
+    // Delete node
+    if (prevNode == NULL) { // Head node deletion
+        LL->head = curNode->next;
+    } else { // Non-head node deletion
+        prevNode->next = curNode->next;
+    }
 }
 
 // Return 1 if node is found and 0 if not
@@ -52,6 +74,7 @@ void displayLinkedList(Linkedlist* LL) {
 }
 
 int main (int argc, char *argv[]) {
+    // TODO -- REPLACE TESTING CALLS WITH REAL IMPLEMENTATION
     Linkedlist* LL = (Linkedlist*) malloc(sizeof(Linkedlist));
     LL->head = NULL;
 
