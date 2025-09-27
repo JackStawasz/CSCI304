@@ -64,7 +64,8 @@ int main() {
 
     // Write each processed line to output file
     while (fgets(line, MAX_LINE_LEN, fp_in)) {
-        fprintf(fp_out, "%s\n", process_line(line));
+        fprintf(fp_out, "%s", process_line(line));
+        // Note the '\n's from input file are preserved as non-alpha characters
     }
 
     fclose(fp_in); fclose(fp_out);
