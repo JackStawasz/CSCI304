@@ -3,7 +3,6 @@
 #include <ctype.h> // Provides "isalpha" function
 
 #define MAX_LINE_LEN 100 // Max 100 characters per line of input file
-#define MAX_WORD_LEN 20  // Max 20 characters per word in line
 
 char* process_word(char* str) {
     int len = strlen(str);
@@ -26,7 +25,7 @@ char* process_word(char* str) {
 char* process_line(char* line) {
     static char str_out[MAX_LINE_LEN];
     str_out[0] = '\0';
-    char word[MAX_WORD_LEN];
+    char word[MAX_LINE_LEN];
     int char_idx = 0; int word_idx = 0;
     while (line[char_idx] != '\0' && char_idx < MAX_LINE_LEN) {
         if (isalpha(line[char_idx])) { // Save letter to word
