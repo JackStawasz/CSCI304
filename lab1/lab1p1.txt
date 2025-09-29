@@ -1,0 +1,27 @@
+break:
+The break command lets us stop the execution of a program at a given point. This is important because, as we will see with the following commands, 
+having a stopping point in the program allows us to use other commands to see what is happening in a given point of code in the middle of execution 
+instead of when it is already finished. In this case, using break main, we can stop the program at the beginning of its execution to see what is 
+going on by using other commands.
+
+next:
+The next command allows you to move to the next line of execution while stopped in the middle of a program. This is useful in cases where we are
+seeing unexpected behavior in the control flow of the program and want to know specifically which lines of code are getting processed or when we
+want to go line by line to analyze some other factors. In the example program, we can use the next command to see that the while block is 
+successfully entered three times before moving to print the value of i.
+
+step:
+The step command lets you go into the execution of a function when it would otherwise be passed over by step. Being able to look into individual
+functions at runtime are useful since they are often used in real world programming to improve the reusability of the code. In the example program, 
+we can use the step command to look into the square function to go line by line and see that it works as it should, albeit with an unnecessary 
+assignment for the variable y.
+
+print:
+The print command lets us print the value of a variable in the middle of a program's executions. This is very useful for figuring out what
+variables are assigned to, especially when variables get assigned from functions, complex equations, or other confusing circumstances. In the
+test program, we can confirm that the square function works as intended, assigning i to 4, 16, and then 256, which is the expected result.
+
+backtrace:
+The backtrace command prints the call stack at a given point in execution. This allows us to view where we are nested in the program, showing us
+all the function calls we are currently in. We can use this at any point in the example program to see whether or not we are in main or the 
+square function at any arbitrary stopping point in the code, which helps us to navigate the code if it gets confusing.
