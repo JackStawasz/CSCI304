@@ -34,4 +34,16 @@ Roughly ~10 collective hours
 
 ## Code Execution Instructions
 
-- Part 1: gcc 
+- Part 2:
+
+-- gcc lab1p2q1.c -o lab1p2q1.out
+
+-- gcc lab1p2q2.c -o lab1p2q2.out
+
+- Part 3:
+
+-- gcc lab1p3.c -o lab1p3.out
+
+- Part 4:
+
+-- gcc lab1p3.c -o lab1p3.out
