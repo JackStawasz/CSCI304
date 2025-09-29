@@ -22,12 +22,16 @@
 
 ## Total Completion Time
 
-Roughly ~TODO hours
+Roughly ~10 collective hours
 
 ## Concerns
 
-TODO
+- Should each student have their own independent submission?
+
+- To what extent are we allowed to use external libraries? We used a few simple ones.
+
+- What is the recommended amount of helper functions?
 
 ## Code Execution Instructions
 
-TODO
+- Part 1: gcc 
