@@ -10,9 +10,9 @@
 
 ### Ethan Spickard
 
-- ID: 93-- TODO
+- ID: 931136624
 
-- Email: TODO
+- Email: ecspickard@wm.edu
 
 ## Effort Distribution
 
