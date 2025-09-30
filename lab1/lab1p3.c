@@ -7,7 +7,7 @@
 *  Input: lab1p3in, the file to be encoded.
 *  Output: Returns exit status, and lab1p3out, the encoded file.
 */
-int main (void) {
+int main (int argc, char **argv) {
     char output[100];
     char *poutput = output;
     char tempword[100];
