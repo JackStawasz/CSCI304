@@ -23,32 +23,35 @@ int main (int argc, char **argv) {
     
     // Moves through every single character of the file to encrypt the message.
     while ((ch = fgetc(fileIn)) != EOF) {
-        // Check to see if the character is alphanumeric or not to know whether or not we need to reverse it.
+        // Check to see if the character is alphabetic or not to know whether or not we need to reverse it.
         if (isalpha(ch)) {
             // Add the character to a temporary buffer that we will reverse once we ahve read the full word.
             *ptempWord = toupper(ch);
             ptempWord++;
         } else {
-            // Go through the temporary buffer and reverse the word, then adding the nonalphanumeric symbol afterwards.
+            // Go through the temporary buffer and reverse the word, then adding the nonalphabetic symbol afterwards.
             while (ptempWord > pwordStart) {
                 ptempWord--;
                 *poutput = *ptempWord;
                 poutput++;
             }
+
+            // Treat underscores as spaces internally.
             if (ch == '_') {
                 ch = ' ';
             }
-            *poutput = toupper(ch);
+
+            // Append the nonalphabetic character to the output.
+            *poutput = ch;
             poutput++;
-   
         }
-       
     }
     
     // Perform one extra loop of reversing the word to account for a word being right before EOF and add a terminating character.
     while (ptempWord > pwordStart) {
         ptempWord--;
         *poutput++ = *ptempWord;
+        poutput++;
     }
 
     *poutput = '\0';
