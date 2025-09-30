@@ -35,6 +35,7 @@ int main (int argc, char **argv) {
                 *poutput = *ptempWord;
                 poutput++;
             }
+            ptempWord = pwordStart;
 
             // Treat underscores as spaces internally.
             if (ch == '_') {
@@ -53,7 +54,6 @@ int main (int argc, char **argv) {
         *poutput++ = *ptempWord;
         poutput++;
     }
-
     *poutput = '\0';
     
     // Write to the output file, making sure we are allowed to, then close out the opened files.
