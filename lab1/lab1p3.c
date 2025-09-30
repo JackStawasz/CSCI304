@@ -10,29 +10,29 @@
 int main (int argc, char **argv) {
     char output[100];
     char *poutput = output;
-    char tempword[100];
-    char *ptempword = tempword;
-    char *pwordstart = tempword;
+    char tempWord[100];
+    char *ptempWord = tempWord;
+    char *pwordStart = tempWord;
     char ch;
 
     // Open file and make sure it exists.
-    FILE *fpin = fopen("lab1p3in", "r");
-    if (!fpin) {
+    FILE *fileIn = fopen("lab1p3in", "r");
+    if (!fileIn) {
         return EXIT_FAILURE;
     }
     
     // Moves through every single character of the file to encrypt the message.
-    while ((ch = fgetc(fpin)) != EOF) {
+    while ((ch = fgetc(fileIn)) != EOF) {
         // Check to see if the character is alphanumeric or not to know whether or not we need to reverse it.
         if (isalnum(ch)) {
             // Add the character to a temporary buffer that we will reverse once we ahve read the full word.
-            *ptempword = toupper(ch);
-            ptempword++;
+            *ptempWord = toupper(ch);
+            ptempWord++;
         } else {
             // Go through the temporary buffer and reverse the word, then adding the nonalphanumeric symbol afterwards.
-            while (ptempword > pwordstart) {
-                ptempword--;
-                *poutput = *ptempword;
+            while (ptempWord > pwordStart) {
+                ptempWord--;
+                *poutput = *ptempWord;
                 poutput++;
             }
             if (ch == '_') {
@@ -46,21 +46,21 @@ int main (int argc, char **argv) {
     }
     
     // Perform one extra loop of reversing the word to account for a word being right before EOF and add a terminating character.
-    while (ptempword > pwordstart) {
-        ptempword--;
-        *poutput++ = *ptempword;
+    while (ptempWord > pwordStart) {
+        ptempWord--;
+        *poutput++ = *ptempWord;
     }
 
     *poutput = '\0';
     
     // Write to the output file, making sure we are allowed to, then close out the opened files.
-    FILE *fpout = fopen("lab1p3out", "w");
-    if (!fpout) {
-        fclose(fpin);
+    FILE *fOut = fopen("lab1p3out", "w");
+    if (!fOut) {
+        fclose(fileIn);
         return EXIT_FAILURE;
     }
-    fprintf(fpout, "%s", output);
-    fclose(fpin);
-    fclose(fpout);
+    fprintf(fOut, "%s", output);
+    fclose(fileIn);
+    fclose(fOut);
     return EXIT_SUCCESS;
 }

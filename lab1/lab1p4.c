@@ -58,11 +58,11 @@ void insertAtTheEnd(Linkedlist* LL, char ele[]) {
     }
     
     // Traverse the Linked List until we find the end, and then insert the desired node.
-    Node *traversalnode = LL->head;
-    while (traversalnode->next != NULL) {
-        traversalnode = traversalnode->next;
+    Node *traversalNode = LL->head;
+    while (traversalNode->next != NULL) {
+        traversalNode = traversalNode->next;
     }
-    traversalnode->next = node;
+    traversalNode->next = node;
 }
 
 /* deleteNode Function
@@ -107,13 +107,13 @@ void deleteNode(Linkedlist* LL, char ele[]) {
 *  Output: 1 if the element can be found, 0 otherwise.
 */
 int findNode(Linkedlist LL, char ele[]) {
-    Node *traversalnode = LL.head;
+    Node *traversalNode = LL.head;
     // Travel the Linked List, stopping only when the desired Node is found or the end of the Linked List is reached.
-    while (traversalnode != NULL) {
-        if (strcmp(traversalnode->data, ele) == 0) {
+    while (traversalNode != NULL) {
+        if (strcmp(traversalNode->data, ele) == 0) {
             return 1;
         }
-        traversalnode = traversalnode->next;
+        traversalNode = traversalNode->next;
     }
     return 0;
 }
