@@ -1,72 +1,66 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h> // Provides "isalpha" function
+#include <stdlib.h>
+#include <ctype.h>
 
-#define MAX_LINE_LEN 100 // Max 100 characters per line of input file
+/* Main Function
+*  Purpose: Controls program, given the input file, reverses and capitalizes all words while keeping nonalphanumeric characters the same.
+*  Input: lab1p3in, the file to be encoded.
+*  Output: Returns exit status, and lab1p3out, the encoded file.
+*/
+int main (void) {
+    char output[100];
+    char *poutput = output;
+    char tempword[100];
+    char *ptempword = tempword;
+    char *pwordstart = tempword;
+    char ch;
 
-char* process_word(char* str) {
-    int len = strlen(str);
-
-    // Perform character swaps
-    for (int i=0; i < len / 2; i++) {
-        char temp = str[i];
-        str[i] = toupper(str[len - i - 1]);
-        str[len - i - 1] = temp;
+    // Open file and make sure it exists.
+    FILE *fpin = fopen("lab1p3in", "r");
+    if (!fpin) {
+        return EXIT_FAILURE;
     }
-
-    // Capitalize letters
-    for (int i=0; i < len; i++) {
-        str[i] = toupper(str[i]);
-    }
-
-    return str;
-}
-
-char* process_line(char* line) {
-    static char str_out[MAX_LINE_LEN];
-    str_out[0] = '\0';
-    char word[MAX_LINE_LEN];
-    int char_idx = 0; int word_idx = 0;
-    while (line[char_idx] != '\0' && char_idx < MAX_LINE_LEN) {
-        if (isalpha(line[char_idx])) { // Save letter to word
-            word[word_idx++] = line[char_idx++];
+    
+    // Moves through every single character of the file to encrypt the message.
+    while ((ch = fgetc(fpin)) != EOF) {
+        // Check to see if the character is alphanumeric or not to know whether or not we need to reverse it.
+        if (isalnum(ch)) {
+            // Add the character to a temporary buffer that we will reverse once we ahve read the full word.
+            *ptempword = toupper(ch);
+            ptempword++;
         } else {
-            // Save reversed word to output
-            word[word_idx] = '\0';
-            strcat(str_out, process_word(word));
-
-            // Replace '_' with ' '
-            int outlen = strlen(str_out);
-            str_out[outlen] = (line[char_idx] == '_' ? ' ' : line[char_idx]);
-            str_out[outlen+1] = '\0';
-            char_idx++;
-
-            // Reset word
-            word[0] = '\0';
-            word_idx = 0;
+            // Go through the temporary buffer and reverse the word, then adding the nonalphanumeric symbol afterwards.
+            while (ptempword > pwordstart) {
+                ptempword--;
+                *poutput = *ptempword;
+                poutput++;
+            }
+            if (ch == '_') {
+                ch = ' ';
+            }
+            *poutput = toupper(ch);
+            poutput++;
+   
         }
+       
+    }
+    
+    // Perform one extra loop of reversing the word to account for a word being right before EOF and add a terminating character.
+    while (ptempword > pwordstart) {
+        ptempword--;
+        *poutput++ = *ptempword;
     }
 
-    // Append any remaining word
-    if (word_idx > 0) {
-        word[word_idx] = '\0';
-        strcat(str_out, process_word(word));
+    *poutput = '\0';
+    
+    // Write to the output file, making sure we are allowed to, then close out the opened files.
+    FILE *fpout = fopen("lab1p3out", "w");
+    if (!fpout) {
+        fclose(fpin);
+        return EXIT_FAILURE;
     }
-
-    return str_out;
-}
-
-int main() {
-    char line[MAX_LINE_LEN];
-    FILE* fp_in = fopen("lab1p3in", "r");
-    FILE *fp_out = fopen("lab1p3out", "w");
-
-    // Write each processed line to output file
-    while (fgets(line, MAX_LINE_LEN, fp_in)) {
-        fprintf(fp_out, "%s", process_line(line));
-        // Note the '\n's from input file are preserved as non-alpha characters
-    }
-
-    fclose(fp_in); fclose(fp_out);
-    return 0;
+    fprintf(fpout, "%s", output);
+    fclose(fpin);
+    fclose(fpout);
+    return EXIT_SUCCESS;
 }
