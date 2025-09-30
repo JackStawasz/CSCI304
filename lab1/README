@@ -28,7 +28,7 @@ Roughly ~10 collective hours
 
 - Should each student have their own independent submission?
 
-- To what extent are we allowed to use external libraries? We used a few simple ones.
+- To what extent are we allowed to use external libraries? We used <string.h> and <ctype.h> for this assignment.
 
 - What is the recommended amount of helper functions?
 
