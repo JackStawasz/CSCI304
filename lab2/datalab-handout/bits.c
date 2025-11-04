@@ -1,7 +1,7 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * Jack Stawasz 931109548
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -161,7 +161,9 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-  return 2;
+  n = n << 3; // Convert n bytes to n bits
+
+  return	(x >> n) & 0xFF; // Extract the n-th byte via mask
 }
 /* 
  * isEqual - return 1 if x == y, and 0 otherwise 
@@ -171,7 +173,7 @@ int getByte(int x, int n) {
  *   Rating: 2
  */
 int isEqual(int x, int y) {
-  return 2;
+  return !(x ^ y);
 }
 /* 
  * bitMask - Generate a mask consisting of all 1's 
@@ -184,7 +186,12 @@ int isEqual(int x, int y) {
  *   Rating: 3
  */
 int bitMask(int highbit, int lowbit) {
-  return 2;
+  unsigned int ones = ~0; // Start with unsigned 1s so shifting pads with 0s
+  int lowMask = ones << lowbit; // Exclude bits lower than lownbit via 0 padding
+  int highbit_from_end = (~highbit + 1) + 31; // Mimic subtraction (31 - highbit) via 2s complement conversion
+  int highMask = ones >> highbit_from_end; // Exclude bits higher than highbit via 0 padding
+
+  return lowMask & highMask; // Apply both masks
 }
 /* 
  * reverseBytes - reverse the bytes of x
