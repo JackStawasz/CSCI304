@@ -201,7 +201,11 @@ int bitMask(int highbit, int lowbit) {
  *   Rating: 3
  */
 int reverseBytes(int x) {
-  return 2;
+  int byte1 = (x << 24); // No mask needed, left shift pads with 0s
+  int byte2 = (x << 8) & 0x00FF0000;
+  int byte3 = (x >> 8) & 0x0000FF00;
+  int byte4 = (x >> 24) & 0x000000FF; // Mask in case negative padding
+  return byte1 | byte2 | byte3 | byte4;
 }
 /* 
  * bang - Compute !x without using !
@@ -211,7 +215,9 @@ int reverseBytes(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+  int negX = ~x + 1; // 2s complement of x
+  int sign = (x | negX) >> 31; // C implementation returns -1 for neg and 0 for 0
+  return sign + 1; // Convert sign to 0 or 1
 }
 /* 
  * leastBitPos - return a mask that marks the position of the
@@ -231,7 +237,7 @@ int leastBitPos(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-  return 2;
+  return 0xFFFFFFFF;
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -240,7 +246,7 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-  return 2;
+  return ~0x80000000; // Negate the max negative int to get max positive int
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -278,7 +284,8 @@ int addOK(int x, int y) {
  *   Rating: 3
  */
 int isGreater(int x, int y) {
-  return 2;
+  int diff = x + (~y + 1); // Difference: x - y
+  return (diff >> 31) ^ 1; // If greater: positive difference (sign bit 0)
 }
 /* 
  * isNegative - return 1 if x < 0, return 0 otherwise 
@@ -288,7 +295,7 @@ int isGreater(int x, int y) {
  *   Rating: 2
  */
 int isNegative(int x) {
-  return 2;
+  return (x >> 31) & 1;
 }
 /*
  * multFiveEighths - multiplies by 5/8 rounding toward 0.
@@ -302,7 +309,8 @@ int isNegative(int x) {
  *   Rating: 3
  */
 int multFiveEighths(int x) {
-  return 2;
+  int fiveX = (x << 2) + x;
+  return fiveX >> 3;
 }
 /* 
  * sm2tc - Convert from sign-magnitude to two's complement
