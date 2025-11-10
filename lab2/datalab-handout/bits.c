@@ -139,8 +139,8 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
+  // De Morgan's Law for "not" sign distribution
   return ~(~x | ~y);
-  //return 2;
 }
 /* 
  * copyLSB - set all bits of result to least significant bit of x
@@ -228,7 +228,8 @@ int bang(int x) {
  *   Rating: 2 
  */
 int leastBitPos(int x) {
-  return 2;
+  int negX = ~x + 1; // 2s complement of x
+  return x & negX; // Only the lowest 1 is shared between x and -x
 }
 /* 
  * minusOne - return a value of -1 
@@ -237,7 +238,7 @@ int leastBitPos(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-  return 0xFFFFFFFF;
+  return ~0;
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -246,7 +247,8 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-  return ~0x80000000; // Negate the max negative int to get max positive int
+  int maxNegative = 1 << 31; // 0x80000000, right-pads with 0s
+  return ~maxNegative; // Negate the max negative int to get max positive int
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -274,7 +276,15 @@ int fitsBits(int x, int n) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-  return 2;
+  // Get sign bits of x, y, and sum
+  int sum = x + y;
+  int signX = (x >> 31) & 1;
+  int signY = (y >> 31) & 1;
+  int signSum = (sum >> 31) & 1;
+
+  // Overflow when x & y have same sign but sum is different
+  int overflow = (!(signX ^ signY)) & (signX ^ signSum);
+  return !overflow; // Return opposite of overflow
 }
 /* 
  * isGreater - if x > y  then return 1, else return 0 
@@ -283,9 +293,16 @@ int addOK(int x, int y) {
  *   Max ops: 24
  *   Rating: 3
  */
-int isGreater(int x, int y) {
-  int diff = x + (~y + 1); // Difference: x - y
-  return (diff >> 31) ^ 1; // If greater: positive difference (sign bit 0)
+int isGreater(int x, int y) { // TODO -- EXPLAIN WITH COMMENTS OR SIMPLIFY!!!!
+    int signX = (x >> 31) & 1;
+    int signY = (y >> 31) & 1;
+    int signDiff = signX ^ signY;
+
+    int diff = x + (~y + 1);
+    int isLess = (diff >> 31) & 1;
+    int isEqual = !(x ^ y);
+
+    return (signDiff & (!signX)) | ((!signDiff) & (!isLess) & (!isEqual));
 }
 /* 
  * isNegative - return 1 if x < 0, return 0 otherwise 
@@ -295,7 +312,8 @@ int isGreater(int x, int y) {
  *   Rating: 2
  */
 int isNegative(int x) {
-  return (x >> 31) & 1;
+  int signBit = x >> 31; // Extract sign bit (32nd bit)
+  return signBit & 1; // Remove implementation-dependent padding
 }
 /*
  * multFiveEighths - multiplies by 5/8 rounding toward 0.
@@ -310,7 +328,8 @@ int isNegative(int x) {
  */
 int multFiveEighths(int x) {
   int fiveX = (x << 2) + x;
-  return fiveX >> 3;
+  int roundFix = (fiveX >> 31) & 7; // Negative numbers must round to 0, not clip toward -inf
+  return (fiveX + roundFix) >> 3;
 }
 /* 
  * sm2tc - Convert from sign-magnitude to two's complement
@@ -336,5 +355,35 @@ int sm2tc(int x) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+  // Edge cases
+  if (x==0) {
+    return 0; // Sign, exponent, data are all 0
+  }
+
+  // Extract sign
+  int signBit = (x >> 31) & 1;
+  if(signBit) {
+    x = ~x + 1; // Convert negative to positive
+  }
+  signBit = signBit << 31; // Shift sign bit into IEEE 754 position
+
+  // Extract exponent
+  int msb = 31; // Start counting from the left
+  while(!(x & (1 << msb)) && msb > 0) { // Decrement msb until the highest 1 bit is found
+    msb--;
+  }
+  int exponent = msb + 127; // IEEE 754 bias=127
+  exponent = exponent << 23; // Shift exponent into IEEE 754 position
+
+  // Extract data component (mantissa)
+  int mantissa = 0;
+  if (msb <= 23) { // Exponent within precission range (all bits fit)
+    mantissa = x << (23 - msb); // Fill mantissa with x's bits from left to right
+  } else { // Exponent outside of precission range (needs to round)
+    mantissa = 0;
+  }
+
+  // Merge x info into xFloat
+  int xFloat = signBit | exponent | mantissa;
+  return xFloat;
 }
