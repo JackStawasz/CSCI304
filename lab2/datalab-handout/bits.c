@@ -186,13 +186,20 @@ int isEqual(int x, int y) {
  *   Rating: 3
  */
 int bitMask(int highbit, int lowbit) {
-  unsigned int ones = ~0; // Start with unsigned 1s so shifting pads with 0s
-  int lowMask = ones << lowbit; // Exclude bits lower than lownbit via 0 padding
-  int highbit_from_end = (~highbit + 1) + 31; // Mimic subtraction (31 - highbit) via 2s complement conversion
-  int highMask = ones >> highbit_from_end; // Exclude bits higher than highbit via 0 padding
+    int width = highbit + (~lowbit + 1) + 1; // Number of 1s in mask (highbit - lowbit + 1)
+    int mask = ((1 << (width & 31)) + ~0); // Create n=width 1s (ex: 1000-1==0111)
 
-  return lowMask & highMask; // Apply both masks
+    int isWidth32 = ~(!(width ^ 32)) + 1; // 1 if width==32
+    mask = (mask & ~isWidth32) | isWidth32; // if width==32, use ~0
+    mask = mask << lowbit; // Shift 1s into masking position
+
+    int isValid = !(width >> 31); // Default to 0 if lowbit > highbit (negative width)
+    return mask & (~isValid + 1); // Zero out mask if invalid
 }
+
+//   int ones = ~(~0 << width) << 1);
+//   int mask = ones << lowbit; 
+
 /* 
  * reverseBytes - reverse the bytes of x
  *   Example: reverseBytes(0x01020304) = 0x04030201
@@ -202,9 +209,9 @@ int bitMask(int highbit, int lowbit) {
  */
 int reverseBytes(int x) {
   int byte1 = (x << 24); // No mask needed, left shift pads with 0s
-  int byte2 = (x << 8) & 0x00FF0000;
-  int byte3 = (x >> 8) & 0x0000FF00;
-  int byte4 = (x >> 24) & 0x000000FF; // Mask in case negative padding
+  int byte2 = ((x >> 8) & 0xFF) << 16;
+  int byte3 = ((x >> 16) & 0xFF) << 8;
+  int byte4 = (x >> 24) & 0xFF; // Mask in case negative padding
   return byte1 | byte2 | byte3 | byte4;
 }
 /* 
@@ -355,35 +362,49 @@ int sm2tc(int x) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
+  unsigned msb, signBit, exponent, mantissa, xFloat;
+
   // Edge cases
   if (x==0) {
-    return 0; // Sign, exponent, data are all 0
+    return 0; // Sign, exponent, & data must all be 0
   }
 
   // Extract sign
-  int signBit = (x >> 31) & 1;
+  signBit = (x >> 31) & 1;
   if(signBit) {
     x = ~x + 1; // Convert negative to positive
   }
-  signBit = signBit << 31; // Shift sign bit into IEEE 754 position
 
   // Extract exponent
-  int msb = 31; // Start counting from the left
+  msb = 31; // Start counting from the left
   while(!(x & (1 << msb)) && msb > 0) { // Decrement msb until the highest 1 bit is found
     msb--;
   }
-  int exponent = msb + 127; // IEEE 754 bias=127
-  exponent = exponent << 23; // Shift exponent into IEEE 754 position
+  exponent = msb + 127; // IEEE 754 bias=127
 
-  // Extract data component (mantissa)
-  int mantissa = 0;
+  // Extract mantissa (the data component)
   if (msb <= 23) { // Exponent within precission range (all bits fit)
-    mantissa = x << (23 - msb); // Fill mantissa with x's bits from left to right
+    int shift = 23 - msb;
+    mantissa = x << shift; // Fill mantissa with x's bits from left to right
   } else { // Exponent outside of precission range (needs to round)
-    mantissa = 0;
+    int shift = msb - 23;
+    unsigned extra = x & ((1U << shift) - 1); // bits that will be shifted out
+    mantissa = x >> shift;
+
+    // Round to nearest even
+    if (extra > (1U << (shift - 1)) || (extra == (1U << (shift - 1)) && (mantissa & 1))) {
+      mantissa++;
+      if (mantissa >> 24) { // Mantissa overflow due to rounding
+        mantissa = mantissa >> 1;
+        exponent++;
+      }
+    }
   }
 
-  // Merge x info into xFloat
-  int xFloat = signBit | exponent | mantissa;
+  // Merge x info into xFloat with correct IEEE 754 format
+  signBit = signBit << 31;
+  exponent = exponent << 23;
+  mantissa = mantissa & 0x7FFFFF; // Keep only 23 bits
+  xFloat = signBit | exponent | mantissa;
   return xFloat;
 }
