@@ -1,6 +1,6 @@
 # Lab 2
 
-## Student Names
+## Student Info
 
 ### Jack Stawasz
 
@@ -8,25 +8,22 @@
 
 - Email: jbstawasz@wm.edu
 
-### Ethan Spickard
-
-- ID: 931136624
-
-- Email: ecspickard@wm.edu
-
 ## Effort Distribution
 
-- Jack: 50%
-
-- Ethan: 50%
+- Jack: 100%
 
 ## Total Completion Time
 
-Roughly ~TODO collective hours
+Roughly ~8 hours
 
 ## Concerns
 
-- TODO
+- It would have been helpful fully understanding the edge case requirements going into each function requirement. For example, it would be helpful to be taught the theoretical understanding that floating point representation must round to the nearest even number rather than facing that issue via debugging.
+
+- How impactful are the code restrictions (such as excluding conditional logic) on final runtime efficiency? It would be neat to compare the low-level bitwise operations in this assignment to high-level means of implementation.
+
 ## Code Execution Instructions
 
-- TODO
+- Functionality Testing: "./btest"
+
+- Code Restriction Adherence: "./dlc -e bits.c"
