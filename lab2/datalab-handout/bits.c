@@ -150,6 +150,7 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int copyLSB(int x) {
+  // Shift out all bits except LSB, then pad all bits with LSB
 	return	(x << 31) >> 31;
 }
 /* 
@@ -299,15 +300,18 @@ int addOK(int x, int y) {
  *   Max ops: 24
  *   Rating: 3
  */
-int isGreater(int x, int y) { // TODO -- EXPLAIN WITH COMMENTS OR SIMPLIFY!!!!
+int isGreater(int x, int y) {
+    // Compare signs of x and y
     int signX = (x >> 31) & 1;
     int signY = (y >> 31) & 1;
     int signDiff = signX ^ signY;
 
+    // Compare values if same sign
     int diff = x + (~y + 1);
     int isLess = (diff >> 31) & 1;
     int isEqual = !(x ^ y);
 
+    // Return true if signs differ and x is positive
     return (signDiff & (!signX)) | ((!signDiff) & (!isLess) & (!isEqual));
 }
 /* 
@@ -346,10 +350,10 @@ int multFiveEighths(int x) {
  *   Rating: 4
  */
 int sm2tc(int x) {
-	int signBit = x >> 31; //extend the sign bit to all bits. If x is negative, signBit is all 1s; otherwise, signBit is all 0s
-	int maskSignBit = ~(1 << 31); //a mask to remove sign bit
-	int reverse = ~(x & maskSignBit) + 1; //get 2's complement for negative cases
-	return ((~signBit) & x) | (signBit & reverse); //if positive or 0, return x; else, return reverse.
+	int signBit = x >> 31; // Extend the sign bit to all bits. If x is negative, signBit is all 1s; otherwise, signBit is all 0s
+	int maskSignBit = ~(1 << 31); // Mask to remove sign bit
+	int reverse = ~(x & maskSignBit) + 1; // Get 2's complement for negative cases
+	return ((~signBit) & x) | (signBit & reverse); // If positive or 0, return x; else, return reverse.
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
