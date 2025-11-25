@@ -1,0 +1,71 @@
+# Inputs: (eax, ebx)
+# Output: eax = eax * ebx
+Multiply:
+    pushl %ebp
+    rrmovl %esp,%ebp
+    
+    irmovl $1, %esi
+    rrmovl %ebx, %ecx # Counter for if condition
+    rrmovl %eax, %edx # Save original value for eax
+    MultiplyLoop:
+        subl %esi, %ecx
+        jle EndMultiplyLoop
+        addl %edx, %eax
+        jmp MultiplyLoop
+        
+    EndMultiplyLoop:
+    rrmovl %ebp,%esp
+    ret
+
+# Input: (eax)
+# Output: eax = eax * (eax-1) * ... * 1
+Factorial:
+    pushl %ebp
+    rrmovl %esp,%ebp
+    
+    irmovl $1, %esi
+    rrmovl %eax, %ecx # Counter for if condition
+    FactorialLoop:
+        subl %esi, %ecx
+        jle EndFactorialLoop
+        
+        rrmovl %ecx, %ebx
+        call Multiply
+        jmp FactorialLoop
+    
+    EndFactorialLoop:
+    rrmovl %ebp,%esp
+    ret
+
+# Input: (eax::Array[n])
+# Output: Results stored sequentially in memory
+ProcessInputs:
+    pushl %ebp
+    rrmovl %esp,%ebp
+    
+    irmovl $4, %eax
+    call Factorial
+    rmmovl %eax, 0x0
+    
+    rrmovl %ebp,%esp
+    ret
+    
+# Run Program
+.pos 0
+Init:
+    irmovl Stack, %ebp
+    irmovl Stack, %esp
+    
+    .align 4
+    Input:
+        .long 0x5 # answer = 1*2*3*4*5 = 120 
+        .long 0xc # answer = 1*2*.... *10*11*12 = 43,545,600 # etc 
+        .long 0x3  
+        Done: .long 0xFFFFFFFF
+    
+    irmovl Input, %eax
+    call ProcessInputs
+    
+.pos 0x100
+Stack:
+    
