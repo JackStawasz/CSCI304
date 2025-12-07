@@ -1,0 +1,187 @@
+.pos 0
+Init:
+    irmovl Stack, %esp
+    call main
+    halt
+
+#========================================
+# Main function
+# Result = output storage location
+#========================================
+main:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    irmovl input_array, %eax # input_array
+    irmovl $3, %ebx # int num_pairs = 3
+    irmovl Result, %edi # result storage pointer
+    call get_pair
+
+    # Epilogue (pop func call)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+#========================================
+# Get Pair
+# Inputs: (%eax, %ebx) = (input_data, num_data)
+#========================================
+get_pair:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    irmovl $0, %ecx # x=0 (immediately add 1 in loop)
+    rrmovl %eax, %edx # Save Input ptr into %edx
+
+get_pairLoop:
+    # for(x=1; x<=num_data; x++)
+    irmovl $1, %esi
+    addl %esi, %ecx
+    rrmovl %ecx, %esi
+    subl %ebx, %esi
+    jg Endget_pairLoop
+
+    mrmovl 0(%edx), %eax
+    mrmovl 4(%edx), %ebx
+    pushl %edx
+    pushl %ecx
+    call raise2pwr
+    popl %ecx
+    popl %edx
+
+    # Save output to Result array in memory
+    rmmovl %eax, 0(%edi)
+    irmovl $4, %esi
+    addl %esi, %edi
+
+    irmovl $8, %esi
+    addl %esi, %edx
+
+    jmp get_pairLoop
+
+Endget_pairLoop:
+    # Epilogue (pop func call)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Raise to Power: (%eax)^(%ebx)
+# Inputs: (num, power) = (%eax, %ebx)
+# Output: result = %eax
+#========================================
+raise2pwr:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    irmovl $0, %ecx # i=0 (immediately add 1 in loop)
+    irmovl $1, %edx # result=1
+
+raise2pwrLoop:
+    # for(x=1; x<=power; x++)
+    irmovl $1, %esi
+    addl %esi, %ecx
+    rrmovl %ecx, %esi
+    subl %ebx, %esi
+    jg Endraise2pwrLoop
+
+    pushl %ebx # save power
+    rrmovl %eax, %ebx
+    pushl %ebx # save num
+    pushl %ecx # save x
+    rrmovl %edx, %ebx # pass in result variable via %ebx
+    call mul_op
+    rrmovl %eax, %edx # store function output into result
+    popl %ecx
+    popl %eax
+    popl %ebx
+
+    jmp raise2pwrLoop
+
+Endraise2pwrLoop:
+    rrmovl %edx, %eax # Return result via %eax
+
+    # Epilogue (pop func call)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Multiply: eax *= ebx
+# (i, j) = (%eax, %ebx)
+#========================================
+mul_op:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    # if j == 0, return 0
+    irmovl $0, %esi
+    rrmovl %ebx, %ecx
+    subl %esi, %ecx
+    jle EndMultiplyZero
+
+    # Multiply by repeated addition
+    rrmovl %eax, %edx # save original i
+    rrmovl %ebx, %ecx # counter
+    irmovl $1, %esi # decrement step
+MulLoop:
+    subl %esi, %ecx # j -= 1
+    jle MultiplyDone # exit loop if j=0
+    addl %edx, %eax # i += i_original
+    jmp MulLoop
+
+EndMultiplyZero:
+    irmovl $0, %eax
+    jmp MultiplyDone
+
+MultiplyDone:
+    # Epilogue (pop func call & return %eax)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Initiate the Stack, Inputs, and Result
+#========================================
+.pos 0x240
+Stack:
+
+# Input Array
+# Each pair of my test values has a comment for the decimal operation,
+# decimal output, and LITTLE-endian hex output of the operation.
+# Max length: 16 longs (before overriding result array memory)
+.pos 0x244 
+input_array:
+    # 2^4 = 16 = 0x10000000
+    .long 0x2
+    .long 0x4
+
+    # 5^3 = 125 = 0x7d000000
+    .long 0x5
+    .long 0x3
+
+    # 6^2 = 36 = 24000000
+    .long 0x6
+    .long 0x2
+
+.pos 0x284
+Result:

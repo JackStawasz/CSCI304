@@ -1,71 +1,138 @@
-# Inputs: (eax, ebx)
-# Output: eax = eax * ebx
-Multiply:
-    pushl %ebp
-    rrmovl %esp,%ebp
-    
-    irmovl $1, %esi
-    rrmovl %ebx, %ecx # Counter for if condition
-    rrmovl %eax, %edx # Save original value for eax
-    MultiplyLoop:
-        subl %esi, %ecx
-        jle EndMultiplyLoop
-        addl %edx, %eax
-        jmp MultiplyLoop
-        
-    EndMultiplyLoop:
-    rrmovl %ebp,%esp
-    ret
-
-# Input: (eax)
-# Output: eax = eax * (eax-1) * ... * 1
-Factorial:
-    pushl %ebp
-    rrmovl %esp,%ebp
-    
-    irmovl $1, %esi
-    rrmovl %eax, %ecx # Counter for if condition
-    FactorialLoop:
-        subl %esi, %ecx
-        jle EndFactorialLoop
-        
-        rrmovl %ecx, %ebx
-        call Multiply
-        jmp FactorialLoop
-    
-    EndFactorialLoop:
-    rrmovl %ebp,%esp
-    ret
-
-# Input: (eax::Array[n])
-# Output: Results stored sequentially in memory
-ProcessInputs:
-    pushl %ebp
-    rrmovl %esp,%ebp
-    
-    irmovl $4, %eax
-    call Factorial
-    rmmovl %eax, 0x0
-    
-    rrmovl %ebp,%esp
-    ret
-    
-# Run Program
 .pos 0
 Init:
-    irmovl Stack, %ebp
     irmovl Stack, %esp
-    
-    .align 4
-    Input:
-        .long 0x5 # answer = 1*2*3*4*5 = 120 
-        .long 0xc # answer = 1*2*.... *10*11*12 = 43,545,600 # etc 
-        .long 0x3  
-        Done: .long 0xFFFFFFFF
-    
     irmovl Input, %eax
     call ProcessInputs
-    
-.pos 0x100
+    halt
+
+#========================================
+# Multiply: eax *= ebx
+#========================================
+Multiply:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    # if ebx == 0, return 0
+    irmovl $0, %esi
+    rrmovl %ebx, %ecx
+    subl %esi, %ecx
+    jle EndMultiplyZero
+
+    # multiply by repeated addition
+    rrmovl %eax, %edx # save original eax
+    rrmovl %ebx, %ecx # counter
+    irmovl $1, %esi # decrement step
+MulLoop:
+    subl %esi, %ecx
+    jle MultiplyDone
+    addl %edx, %eax
+    jmp MulLoop
+
+EndMultiplyZero:
+    irmovl $0, %eax
+    jmp MultiplyDone
+
+MultiplyDone:
+    # Epilogue (pop func call & return %eax)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Factorial: eax = eax!
+#========================================
+Factorial:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    rrmovl %eax, %ecx # counter = input value
+    irmovl $1, %esi # decrement step
+
+FactLoop:
+    subl %esi, %ecx
+    jle EndFactLoop
+    rrmovl %ecx, %ebx # multiply running factorial by counter
+
+    pushl %ecx
+    call Multiply
+    popl %ecx
+
+    jmp FactLoop
+
+EndFactLoop:
+    # Epilogue (pop func call & return %eax)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Process array of inputs
+# %eax = input array's address
+# Result = output storage location
+#========================================
+ProcessInputs:
+    # Stack Prologue
+    irmovl $4, %ecx
+    subl %ecx, %esp
+    rmmovl %ebp, 0(%esp)
+    rrmovl %esp, %ebp
+
+    irmovl Result, %edi  # result storage pointer
+    rrmovl %eax, %edx # Save Input ptr into %edx
+
+NextInput:
+    mrmovl 0(%edx), %ecx
+    irmovl $0xFFFFFFFF, %esi
+    subl %esi, %ecx
+    je DoneProcessing
+
+    mrmovl 0(%edx), %eax
+    pushl %edx
+    pushl %edi
+    call Factorial # eax = value argument and return
+    popl %edi
+    popl %edx
+    rmmovl %eax, 0(%edi) # store factorial
+
+    irmovl $4, %ecx
+    addl %ecx, %edx # increment input ptr
+    addl %ecx, %edi # increment result ptr
+    jmp NextInput
+
+DoneProcessing:
+    # Epilogue (pop func call)
+    rrmovl %ebp, %esp
+    mrmovl 0(%esp), %ebp
+    irmovl $4, %ecx
+    addl %ecx, %esp
+    ret
+
+#========================================
+# Initiate the Stack, Inputs, and Result
+#========================================
+.pos 0x140
 Stack:
-    
+
+# Input Array
+# Each of my test values has a comment for the decimal operation,
+# decimal output, and LITTLE-endian hex output of the operation.
+# Max length: 16 longs (before overriding result array memory)
+.pos 0x160 
+Input:
+    .long 0x5 # 5! = 120 = 0x78000000
+    .long 0xc # 12! = 0x00fc8c1c
+    .long 0x3 # 3! = 6 = 0x06000000
+    .long 0xFFFFFFFF # End input flag
+
+.pos 0x284
+Result:

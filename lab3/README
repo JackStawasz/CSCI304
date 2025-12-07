@@ -1,0 +1,31 @@
+# Lab 1
+
+## Student Info
+
+### Jack Stawasz
+
+- ID: 931109548
+
+- Email: jbstawasz@wm.edu
+
+## Effort Distribution
+
+- Jack: 100%
+
+## Total Completion Time
+
+Roughly ~8 hours
+
+## Concerns
+
+- I was unsure if the grader could track my results so I wrote each output into a "Result" array in memory. I would appreciate this to be included in the instructions.
+
+## Code Execution Instructions
+
+- Add inputs by editing the Input array at the bottom of the code.
+
+- Results are saved into array starting at byte position 0x284.
+
+- Part 1 inputs must come before the 0xFFFFFFFF flag which signals the end of the array.
+
+- Part 2 inputs must be added in pairs (first element to the power of the second element).
