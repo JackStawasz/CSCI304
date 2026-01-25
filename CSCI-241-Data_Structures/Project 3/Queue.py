@@ -1,0 +1,36 @@
+from Deque_Generator import get_deque
+
+class Queue:
+
+  def __init__(self):
+    """Initialize"""
+    # O(1): one step taken
+    self.__dq = get_deque()
+
+  def __str__(self):
+    """Return String"""
+    # O(n): the deque string methods are explained in their files
+    return str(self.__dq)
+
+  def __len__(self):
+    """Return Length"""
+    # O(1): length is a stored value
+    return len(self.__dq)
+
+  def enqueue(self, val):
+    """Create New Value at Back"""
+    # O(1): push_back() can instantly find the back's location and insert the value
+    self.__dq.push_back(val)
+
+  def dequeue(self):
+    """Delete & Return Front Value"""
+    # O(1): pop_front() can instantly find the front's location and remove the value
+    return self.__dq.pop_front()
+
+  def peek(self):
+    """Return Front Value"""
+    # O(1): peek_front() can instantly find the front's location and remove the value
+    return self.__dq.peek_front()
+
+# Unit tests make the main section unneccessary.
+  
