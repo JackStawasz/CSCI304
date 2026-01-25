@@ -1,34 +1,104 @@
-# Prerequisites
-*.d
+############################
+# Build / Gradle
+############################
+.gradle/
+build/
+out/
+bin/
+dist/
+nbbuild/
+nbdist/
 
-# Object files
+# Keep Gradle wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Allow build/output dirs inside src if explicitly needed
+!**/src/main/**/build/
+!**/src/test/**/build/
+!**/src/main/**/out/
+!**/src/test/**/out/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+############################
+# IntelliJ IDEA
+############################
+.idea/
+*.iml
+*.iws
+*.ipr
+
+############################
+# Eclipse / Spring / STS
+############################
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+############################
+# NetBeans
+############################
+/nbproject/private/
+/.nb-gradle/
+
+############################
+# VS Code
+############################
+.vscode/
+*.code-workspace
+
+############################
+# OS / Editor temp files
+############################
+.DS_Store
+*~
+*.dSYM/
+
+############################
+# Compiled objects
+############################
+*.d
 *.o
 *.ko
 *.obj
 *.elf
 
+############################
 # Linker output
+############################
 *.ilk
 *.map
 *.exp
 
-# Precompiled Headers
+############################
+# Precompiled headers
+############################
 *.gch
 *.pch
 
+############################
 # Libraries
+############################
 *.lib
 *.a
 *.la
 *.lo
 
-# Shared objects (inc. Windows DLLs)
+############################
+# Shared libraries
+############################
 *.dll
 *.so
 *.so.*
 *.dylib
 
+############################
 # Executables
+############################
 *.exe
 *.out
 *.app
@@ -36,13 +106,12 @@
 *.x86_64
 *.hex
 
-# Debug files
-*.dSYM/
+############################
+# Debug / kernel artifacts
+############################
 *.su
 *.idb
 *.pdb
-
-# Kernel Module Compile Results
 *.mod*
 *.cmd
 .tmp_versions/
@@ -50,14 +119,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-# debug information files
 *.dwo
-
-# VS Code
-.vscode/
-*.code-workspace
-
-# Temp / backup files
-*~
-.DS_Store
