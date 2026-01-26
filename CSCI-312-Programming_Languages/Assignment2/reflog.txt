@@ -1,0 +1,109 @@
+8d45534 HEAD@{0}: merge feature/deal-with-arrays: Fast-forward
+affa7f1 HEAD@{1}: checkout: moving from feature/deal-with-arrays to main
+8d45534 HEAD@{2}: commit: Add array handling
+1019529 HEAD@{3}: commit: Add array handling outline
+affa7f1 HEAD@{4}: checkout: moving from main to feature/deal-with-arrays
+affa7f1 HEAD@{5}: merge feature/deal-with-function-args: Fast-forward
+c23bd8e HEAD@{6}: checkout: moving from feature/deal-with-function-args to main
+affa7f1 HEAD@{7}: commit: Fix missing parentheses
+567ee2b HEAD@{8}: commit: Fix capitalization typo
+b46c293 HEAD@{9}: commit: Add function arg handling
+6c8a854 HEAD@{10}: commit: Add function arg handling outline
+c23bd8e HEAD@{11}: checkout: moving from main to feature/deal-with-function-args
+c23bd8e HEAD@{12}: merge feature/deal-with-pointers: Fast-forward
+659a201 HEAD@{13}: checkout: moving from feature/deal-with-pointers to main
+c23bd8e HEAD@{14}: commit: Add pointer handling
+b4a424b HEAD@{15}: commit: Add pointer handling outline
+659a201 HEAD@{16}: checkout: moving from main to feature/deal-with-pointers
+659a201 HEAD@{17}: merge feature/deal-with-declarator: Merge made by the 'ort' strategy.
+0de2b93 HEAD@{18}: checkout: moving from feature/deal-with-declarator to main
+30aba77 HEAD@{19}: commit: Add declarator handling to main
+a62e5a3 HEAD@{20}: commit: Add stack token processing
+f8b6755 HEAD@{21}: commit: Add declarator array/function cases
+214e72d HEAD@{22}: checkout: moving from main to feature/deal-with-declarator
+0de2b93 HEAD@{23}: merge feature/more-modules: Fast-forward
+5af5d1f HEAD@{24}: checkout: moving from feature/more-modules to main
+0de2b93 HEAD@{25}: commit: Experiment with profiling
+214e72d HEAD@{26}: checkout: moving from feature/deal-with-declarator to feature/more-modules
+214e72d HEAD@{27}: commit: Add deal_with_declarator() outline
+5af5d1f HEAD@{28}: checkout: moving from main to feature/deal-with-declarator
+5af5d1f HEAD@{29}: commit: Fix quotation symbol typos
+92c459b HEAD@{30}: merge feature/classify-string: Fast-forward
+6190d0e HEAD@{31}: checkout: moving from feature/classify-string to main
+92c459b HEAD@{32}: commit: Add classify_string() implementation
+d81ba5a HEAD@{33}: commit: Add classify_string() outline
+6190d0e HEAD@{34}: checkout: moving from main to feature/classify-string
+6190d0e HEAD@{35}: merge feature/gettoken: Fast-forward
+105772d HEAD@{36}: checkout: moving from feature/gettoken to main
+6190d0e HEAD@{37}: commit: Add gettoken() implementation
+3a5d5dd HEAD@{38}: commit: Add gettoken() outline
+ddbfb20 HEAD@{39}: commit: Add token stack
+f61b00b HEAD@{40}: commit: Add token type
+105772d HEAD@{41}: checkout: moving from main to feature/gettoken
+105772d HEAD@{42}: merge feature/read-to-first-identifier: Fast-forward
+f589082 HEAD@{43}: checkout: moving from feature/read-to-first-identifier to main
+105772d HEAD@{44}: commit: Fix undeclared type bug
+29b5b9b HEAD@{45}: commit: Add identifier reading implementation
+52ff771 HEAD@{46}: commit: Add read_to_first_identifier() outline
+f589082 HEAD@{47}: checkout: moving from main to feature/read-to-first-identifier
+f589082 HEAD@{48}: merge feature/main: Fast-forward
+a1d1840 HEAD@{49}: checkout: moving from feature/main to main
+f589082 HEAD@{50}: commit: Add placeholder calls in main()
+1cd4bcc HEAD@{51}: commit: Add main() outline
+a1d1840 HEAD@{52}: checkout: moving from main to feature/main
+a1d1840 HEAD@{53}: checkout: moving from feature/read-to-first-identifier to main
+a1d1840 HEAD@{54}: checkout: moving from main to feature/read-to-first-identifier
+a1d1840 HEAD@{55}: commit: Initial Assignment2 commit
+3bead2f HEAD@{56}: commit: Experiment with linking
+df05aa5 HEAD@{57}: commit: finished final changes for Assignment1
+ae23edc HEAD@{58}: commit: add assignment1 latex pdf
+eaf1214 HEAD@{59}: merge assignment-1: Fast-forward
+d24dbd9 HEAD@{60}: checkout: moving from assignment-1 to main
+eaf1214 HEAD@{61}: merge main: Merge made by the 'ort' strategy.
+f89f22a HEAD@{62}: commit: remove many unrecognized & clean frequency.txt
+09ea1a0 HEAD@{63}: commit: cleanup files
+b48b184 HEAD@{64}: commit: add tests functionality
+def0ab1 HEAD@{65}: commit: add more operators in lex.l
+2ef4f32 HEAD@{66}: checkout: moving from main to assignment-1
+d24dbd9 HEAD@{67}: commit: debugging
+db5eac1 HEAD@{68}: checkout: moving from feature/sumr to main
+db5eac1 HEAD@{69}: checkout: moving from main to feature/sumr
+db5eac1 HEAD@{70}: checkout: moving from assignment-1 to main
+2ef4f32 HEAD@{71}: commit: add assignment operator
+5ccd8fc HEAD@{72}: commit: import necessary files
+db5eac1 HEAD@{73}: checkout: moving from main to assignment-1
+db5eac1 HEAD@{74}: merge feature/sumr: Fast-forward
+d83c1d4 HEAD@{75}: checkout: moving from feature/sumr to main
+db5eac1 HEAD@{76}: commit: Change sum.c into recursive implementation sumr.c
+d83c1d4 HEAD@{77}: checkout: moving from main to feature/sumr
+d83c1d4 HEAD@{78}: commit: Implement sum.c
+6c4e272 HEAD@{79}: commit: Experiment more with basics of functions
+2ba11a9 HEAD@{80}: merge feature/basics-of-functions: Fast-forward
+d2977df HEAD@{81}: checkout: moving from feature/basics-of-functions to main
+2ba11a9 HEAD@{82}: commit: Experiment with basics of functions
+d2977df HEAD@{83}: checkout: moving from main to feature/basics-of-functions
+d2977df HEAD@{84}: merge feature/assignment1: Fast-forward
+c6c4370 HEAD@{85}: checkout: moving from feature/assignment1 to main
+d2977df HEAD@{86}: commit: experiment with the assembler
+21ddbfd HEAD@{87}: commit: experiment with conditional inclusion
+e62c21f HEAD@{88}: commit: Experiment with macro substitution
+3dad572 HEAD@{89}: commit: Experiment with file inclusion
+b679868 HEAD@{90}: commit: add 00_HELLO
+00de385 HEAD@{91}: commit: update Assignment 1
+c6c4370 HEAD@{92}: checkout: moving from main to feature/assignment1
+c6c4370 HEAD@{93}: checkout: moving from feature/assignment1 to main
+c6c4370 HEAD@{94}: checkout: moving from main to feature/assignment1
+c6c4370 HEAD@{95}: commit: Add my assignment0 submission
+c4549c4 HEAD@{96}: merge feature/here-document: Fast-forward
+920c768 HEAD@{97}: checkout: moving from feature/here-document to main
+c4549c4 HEAD@{98}: commit: Update first-script.sh
+920c768 HEAD@{99}: checkout: moving from main to feature/here-document
+920c768 HEAD@{100}: merge feature/first-script: Fast-forward
+c216181 HEAD@{101}: checkout: moving from feature/first-script to main
+920c768 HEAD@{102}: commit: Add first-script.sh
+c216181 HEAD@{103}: checkout: moving from main to feature/first-script
+c216181 HEAD@{104}: checkout: moving from feature/first-script to main
+c216181 HEAD@{105}: checkout: moving from main to feature/first-script
+c216181 HEAD@{106}: commit: Add .gitignore, Remove unnecessary .zip file
+fae37f3 HEAD@{107}: pull: Fast-forward
+d7e2fa8 HEAD@{108}: clone: from github.com:CSCI312/stawasz-jack.git

@@ -1,0 +1,21 @@
+CC=gcc
+CFLAGS=-Wall -g -O0
+LDFLAGS=
+EXE=hello.out
+SRC=$(EXE:.out=.c)
+OBJ=$(SRC:.c=.o)
+
+.PHONY: run
+run: $(EXE)
+	./$(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
+
+$(OBJ): $(SRC)
+	$(CC) $(CFLAGS) -c -o $(OBJ) $(SRC)
+
+.PHONY: clean
+clean:
+	rm -f $(EXE) $(OBJ)
+

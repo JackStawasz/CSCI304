@@ -1,0 +1,2 @@
+hello.out: hello.c
+	gcc -Wall -g -O0 -o hello.out hello.c

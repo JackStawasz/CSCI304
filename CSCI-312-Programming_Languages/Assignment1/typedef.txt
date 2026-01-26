@@ -1,0 +1,17 @@
+./core/oss/mulaw.c
+./core/oss/rate.c
+./core/pcm_compat.c
+./core/pcm_lib.c
+./isa/cmi8330.c
+./pci/au88x0/au88x0_core.c
+./pci/ctxfi/ctatc.c
+./pci/hda/hda_codec.c
+./pci/hda/hda_generic.c
+./soc/codecs/wm2000.c
+./soc/mediatek/mt6797/mt6797-afe-pcm.c
+./soc/mediatek/mt8183/mt8183-afe-pcm.c
+./soc/mediatek/mt8186/mt8186-afe-pcm.c
+./soc/mediatek/mt8192/mt8192-afe-pcm.c
+./soc/mediatek/mt8195/mt8195-afe-pcm.c
+./soc/sof/ipc3.c
+./usb/quirks.c
